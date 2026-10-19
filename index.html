@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>David Ventura — Portafolio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  /* Layout: una sola columna centrada (max ~68rem); bandas de ancho completo con wrapper interno;
+     tarjetas de proyecto en grid que colapsa a 1 columna en móvil. Identidad "ingeniería": navy
+     neutro + acento ámbar, mono para etiquetas/eyebrows. */
+  :root{
+    --bg:#f6f7f9; --surface:#ffffff; --surface-2:#eef1f5;
+    --fg:#141a23; --muted:#59636f; --border:#dde3ea;
+    --accent:#bb6a16; --accent-soft:rgba(187,106,22,.12); --accent-fg:#ffffff;
+    --ring:rgba(187,106,22,.38);
+    --shadow:0 1px 2px rgba(20,26,35,.04), 0 10px 30px -18px rgba(20,26,35,.25);
+    --font-display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+    --font-body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+    --font-mono:'IBM Plex Mono',ui-monospace,'Cascadia Code',Consolas,monospace;
+    --maxw:68rem;
+  }
+  @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+    --bg:#0d1016; --surface:#141a22; --surface-2:#1b232e;
+    --fg:#e8edf3; --muted:#93a0b0; --border:#26303c;
+    --accent:#e8a33d; --accent-soft:rgba(232,163,61,.14); --accent-fg:#1a1205;
+    --ring:rgba(232,163,61,.42);
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 18px 40px -22px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }}
+  :root[data-theme="dark"]{
+    --bg:#0d1016; --surface:#141a22; --surface-2:#1b232e;
+    --fg:#e8edf3; --muted:#93a0b0; --border:#26303c;
+    --accent:#e8a33d; --accent-soft:rgba(232,163,61,.14); --accent-fg:#1a1205;
+    --ring:rgba(232,163,61,.42);
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 18px 40px -22px rgba(0,0,0,.7);
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:var(--font-body); font-size:16px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    width:100%; max-width:var(--maxw); margin-inline:auto;
+    padding-left:max(20px,env(safe-area-inset-left,0px));
+    padding-right:max(20px,env(safe-area-inset-right,0px));
+  }
+  a{color:inherit}
+  h1,h2,h3{font-family:var(--font-display); font-weight:700; text-wrap:balance; margin:0}
+  .eyebrow{
+    font-family:var(--font-mono); font-size:.72rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--muted);
+  }
+
+  /* ---- top bar ---- */
+  header.bar{
+    position:sticky; top:env(safe-area-inset-top,0px); z-index:20;
+    background:color-mix(in srgb,var(--bg) 86%,transparent);
+    backdrop-filter:saturate(1.3) blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .bar .wrap{display:flex; align-items:center; justify-content:space-between; padding-block:12px}
+  .brand{font-family:var(--font-mono); font-size:.9rem; letter-spacing:.02em}
+  .brand b{color:var(--accent)}
+  .bar nav{display:flex; align-items:center; gap:4px}
+  .bar nav a{
+    font-family:var(--font-mono); font-size:.8rem; color:var(--muted);
+    text-decoration:none; padding:7px 10px; border-radius:8px;
+  }
+  .bar nav a:hover{color:var(--fg); background:var(--surface-2)}
+  .theme-btn{
+    display:inline-grid; place-items:center; width:36px; height:36px;
+    border:1px solid var(--border); border-radius:9px; background:var(--surface);
+    color:var(--fg); cursor:pointer; font-size:15px;
+  }
+  .theme-btn:hover{border-color:var(--accent)}
+
+  /* ---- hero ---- */
+  .hero{padding-block:clamp(48px,9vw,96px)}
+  .hero .eyebrow{display:block; margin-bottom:18px}
+  .hero h1{font-size:clamp(2.4rem,7vw,4.2rem); line-height:1.02; letter-spacing:-.02em}
+  .hero p.lead{
+    font-size:clamp(1.05rem,2.4vw,1.3rem); color:var(--muted);
+    max-width:40ch; margin:22px 0 0;
+  }
+  .cta{display:flex; flex-wrap:wrap; gap:12px; margin-top:34px}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; cursor:pointer;
+    font-family:var(--font-mono); font-size:.86rem; font-weight:500;
+    padding:11px 18px; border-radius:10px; text-decoration:none;
+    border:1px solid var(--border); background:var(--surface); color:var(--fg);
+    transition:transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .btn:hover{transform:translateY(-2px); border-color:var(--accent)}
+  .btn.primary{background:var(--accent); color:var(--accent-fg); border-color:var(--accent)}
+  .btn.primary:hover{filter:brightness(1.05)}
+  .btn svg{width:15px; height:15px}
+  .hero .meta{
+    display:flex; flex-wrap:wrap; gap:10px 22px; margin-top:30px;
+    font-family:var(--font-mono); font-size:.8rem; color:var(--muted);
+  }
+  .hero .meta span{display:inline-flex; align-items:center; gap:8px}
+  .dot{width:6px; height:6px; border-radius:50%; background:var(--accent)}
+
+  /* ---- section frame ---- */
+  section{padding-block:clamp(40px,7vw,72px)}
+  .sec-head{display:flex; align-items:baseline; gap:14px; margin-bottom:28px}
+  .sec-head h2{font-size:clamp(1.5rem,3.6vw,2rem); letter-spacing:-.01em}
+  .sec-head .num{font-family:var(--font-mono); font-size:.8rem; color:var(--accent)}
+  .rule{height:1px; background:var(--border); border:0; margin:0}
+
+  /* ---- stack ---- */
+  .stack-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+  @media (max-width:560px){.stack-grid{grid-template-columns:1fr}}
+  .stack-card{
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:14px; padding:18px 20px;
+  }
+  .stack-card h3{font-size:.78rem; font-family:var(--font-mono); letter-spacing:.1em;
+    text-transform:uppercase; color:var(--muted); margin-bottom:12px; font-weight:600}
+  .chips{display:flex; flex-wrap:wrap; gap:7px}
+  .chip{
+    font-family:var(--font-mono); font-size:.76rem; color:var(--fg);
+    background:var(--surface-2); border:1px solid var(--border);
+    padding:5px 10px; border-radius:7px;
+  }
+  .chip.hot{border-color:var(--accent); color:var(--accent); background:var(--accent-soft)}
+
+  /* ---- projects ---- */
+  .proj-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px}
+  @media (max-width:760px){.proj-grid{grid-template-columns:1fr}}
+  .card{
+    display:flex; flex-direction:column; min-width:0;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:16px; padding:22px; box-shadow:var(--shadow);
+    transition:transform .14s ease, border-color .14s ease;
+  }
+  .card:hover{transform:translateY(-3px); border-color:var(--accent)}
+  .card.feature{grid-column:1 / -1; border-color:color-mix(in srgb,var(--accent) 45%,var(--border))}
+  .card-top{display:flex; align-items:flex-start; justify-content:space-between; gap:12px}
+  .card h3{font-size:1.22rem; letter-spacing:-.01em}
+  .card.feature h3{font-size:clamp(1.3rem,3vw,1.7rem)}
+  .badge{
+    flex:none; font-family:var(--font-mono); font-size:.66rem; letter-spacing:.08em;
+    text-transform:uppercase; padding:5px 9px; border-radius:999px;
+    background:var(--accent); color:var(--accent-fg); font-weight:600;
+  }
+  .role{font-family:var(--font-mono); font-size:.76rem; color:var(--accent); margin-top:6px}
+  .card p{color:var(--muted); margin:12px 0 0; font-size:.95rem}
+  .card .chips{margin-top:16px}
+  .card .actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:18px}
+  .link-btn{
+    display:inline-flex; align-items:center; gap:7px; text-decoration:none;
+    font-family:var(--font-mono); font-size:.8rem; font-weight:500;
+    padding:8px 14px; border-radius:9px; border:1px solid var(--border);
+    background:var(--bg); color:var(--fg);
+    transition:border-color .12s ease, transform .12s ease;
+  }
+  .link-btn:hover{border-color:var(--accent); transform:translateY(-1px)}
+  .link-btn.solid{background:var(--accent); color:var(--accent-fg); border-color:var(--accent)}
+  .link-btn svg{width:14px; height:14px}
+  .tag-private{
+    font-family:var(--font-mono); font-size:.74rem; color:var(--muted);
+    display:inline-flex; align-items:center; gap:7px; padding:8px 4px;
+  }
+  .note-demo{font-family:var(--font-mono); font-size:.72rem; color:var(--muted); margin-top:12px}
+
+  .more-title{font-size:1rem; font-family:var(--font-mono); letter-spacing:.06em; color:var(--muted);
+    margin:34px 0 16px; font-weight:600}
+  .more-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px}
+  @media (max-width:760px){.more-grid{grid-template-columns:1fr}}
+  .mini{
+    display:flex; flex-direction:column; gap:8px; min-width:0;
+    background:var(--surface); border:1px solid var(--border); border-radius:13px; padding:16px 18px;
+    transition:border-color .12s ease, transform .12s ease;
+  }
+  .mini:hover{border-color:var(--accent); transform:translateY(-2px)}
+  .mini h4{margin:0; font-family:var(--font-display); font-size:1.02rem}
+  .mini p{margin:0; color:var(--muted); font-size:.86rem}
+  .mini a{
+    margin-top:auto; align-self:flex-start; text-decoration:none;
+    font-family:var(--font-mono); font-size:.76rem; color:var(--accent);
+    display:inline-flex; align-items:center; gap:6px; padding-top:6px;
+  }
+  .mini a:hover{text-decoration:underline}
+  .mini a svg{width:13px; height:13px}
+
+  /* ---- contact ---- */
+  .contact{background:var(--surface-2); border-top:1px solid var(--border)}
+  .contact .wrap{padding-block:clamp(44px,7vw,72px)}
+  .contact h2{font-size:clamp(1.6rem,4vw,2.3rem); letter-spacing:-.01em}
+  .contact p{color:var(--muted); max-width:46ch; margin:14px 0 0}
+  .contact-row{display:flex; flex-wrap:wrap; gap:12px; margin-top:26px; align-items:center}
+  .mailbox{
+    display:inline-flex; align-items:center; gap:10px; min-width:0;
+    font-family:var(--font-mono); font-size:.86rem;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:10px; padding:10px 14px;
+  }
+  .mailbox button{
+    border:0; background:var(--accent); color:var(--accent-fg); cursor:pointer;
+    font-family:var(--font-mono); font-size:.74rem; padding:5px 10px; border-radius:7px;
+  }
+  footer.foot{padding-block:28px; border-top:1px solid var(--border)}
+  footer.foot .wrap{display:flex; flex-wrap:wrap; gap:8px 16px; justify-content:space-between;
+    font-family:var(--font-mono); font-size:.76rem; color:var(--muted)}
+
+  :where(a,button,.btn,.link-btn):focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:8px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+  <style>*{box-sizing:border-box} html{-webkit-text-size-adjust:100%} img{max-width:100%} [hidden]{display:none!important}</style>
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <span class="brand">vDiv<b>Code</b></span>
+    <nav>
+      <a href="#proyectos">Proyectos</a>
+      <a href="#stack">Stack</a>
+      <a href="#contacto">Contacto</a>
+      <button class="theme-btn" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">◐</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Desarrollador web · IA / MCP · Trujillo, Perú</span>
+      <h1>David Ventura<br>Guzmán</h1>
+      <p class="lead">Estudiante de Ingeniería de Sistemas que construye aplicaciones web y conecta la IA con datos reales mediante el Model Context Protocol.</p>
+      <div class="cta">
+        <a class="btn primary" href="#proyectos">Ver proyectos
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+        </a>
+        <a class="btn" href="https://campus-utp.onrender.com" target="_blank" rel="noopener">Probar demo en vivo
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+      </div>
+      <div class="meta">
+        <span><span class="dot"></span>Full stack · Java &amp; TypeScript</span>
+        <span><span class="dot"></span>Spring Boot · Next.js · Vue</span>
+        <span><span class="dot"></span>Model Context Protocol</span>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="proyectos">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="num">01</span>
+        <h2>Proyectos</h2>
+      </div>
+      <div class="proj-grid">
+
+        <!-- Destacado -->
+        <article class="card feature">
+          <div class="card-top">
+            <div>
+              <h3>campus-utp — Servidor MCP académico</h3>
+              <div class="role">Proyecto grupal · desarrollé el servidor MCP</div>
+            </div>
+            <span class="badge">Destacado</span>
+          </div>
+          <p>Un servidor <strong>MCP (Model Context Protocol)</strong> que conecta el expediente académico de un alumno con la bolsa de prácticas: el modelo ve sus notas y las vacantes abiertas, y le dice a cuál califica y qué le falta. Implementé 9 herramientas (notas, horarios, aulas libres, cruce de vacantes), recursos y prompts, con autenticación <strong>OAuth 2.1 (PKCE)</strong>, transportes HTTP y stdio, y un plugin para Claude y ChatGPT. Desplegado en Render.</p>
+          <div class="chips">
+            <span class="chip hot">MCP</span><span class="chip">TypeScript</span><span class="chip">Node</span>
+            <span class="chip">OAuth 2.1 / PKCE</span><span class="chip">JSON-RPC</span><span class="chip">Render</span>
+          </div>
+          <div class="actions">
+            <a class="link-btn solid" href="https://campus-utp.onrender.com" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg>
+              Probar en vivo
+            </a>
+            <span class="tag-private">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              Código privado (trabajo grupal)
+            </span>
+          </div>
+          <div class="note-demo">La demo corre en un plan gratuito: si está dormida, tarda ~50 s en despertar. Si la primera carga falla, reintenta.</div>
+        </article>
+
+        <!-- Plus Twenty -->
+        <article class="card">
+          <div class="card-top"><div><h3>Plus Twenty</h3><div class="role">Sistema de gestión académica</div></div></div>
+          <p>Matrícula en línea, portal de estudiantes y apoderados, asistencia, y cobranza con comprobantes. Control de acceso por roles con Spring Security y cifrado BCrypt, persistencia con JPA/Hibernate y pruebas automatizadas.</p>
+          <div class="chips"><span class="chip">Java</span><span class="chip">Spring Boot</span><span class="chip">Spring Security</span><span class="chip">JPA</span></div>
+          <div class="actions">
+            <span class="tag-private">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              Repo privado · demo bajo pedido
+            </span>
+          </div>
+        </article>
+
+        <!-- Tic-Tac Trux -->
+        <article class="card">
+          <div class="card-top"><div><h3>Tic-Tac Trux</h3><div class="role">Sistema de reservas de hotel</div></div></div>
+          <p>Aplicación web con Spring Data JPA/Hibernate y base de datos MySQL en la nube (Aiven), modelado de entidades y validaciones, seguridad stateless con JWT y BCrypt, y vistas Thymeleaf responsivas.</p>
+          <div class="chips"><span class="chip">Java</span><span class="chip">Spring Boot 3.4.5</span><span class="chip">JWT</span><span class="chip">MySQL</span><span class="chip">Thymeleaf</span></div>
+          <div class="actions">
+            <span class="tag-private">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              Repo privado · demo bajo pedido
+            </span>
+          </div>
+        </article>
+
+        <!-- Proyecto Web -->
+        <article class="card">
+          <div class="card-top"><div><h3>Proyecto Web</h3><div class="role">Next.js + Spring Boot</div></div></div>
+          <p>Frontend en Next.js con TypeScript e interfaces responsive en Tailwind, y un backend en Spring Boot que expone una API REST para la gestión de datos.</p>
+          <div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">Tailwind</span><span class="chip">Spring Boot</span></div>
+          <div class="actions">
+            <span class="tag-private">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              Repo privado · demo bajo pedido
+            </span>
+          </div>
+        </article>
+
+        <!-- Calculadora Panel Solar -->
+        <article class="card">
+          <div class="card-top"><div><h3>Calculadora Panel Solar</h3><div class="role">Hidrosolar · cálculo e implementación</div></div></div>
+          <p>Herramienta en TypeScript para dimensionar paneles solares, con calculadora y dashboard de resultados.</p>
+          <div class="chips"><span class="chip">TypeScript</span><span class="chip">Vercel</span><span class="chip">Dashboard</span></div>
+          <div class="actions">
+            <a class="link-btn solid" href="https://calculadora-panel-solar.vercel.app/" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg>
+              Ver en vivo
+            </a>
+            <a class="link-btn" href="https://github.com/vDivCode/CalculadoraPanelSolar" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.9-1.29 2.74-1.02 2.74-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+              Código
+            </a>
+          </div>
+        </article>
+
+        <!-- Sistema de Ahorro IA -->
+        <article class="card">
+          <div class="card-top"><div><h3>Sistema de Ahorro IA</h3><div class="role">Gestión de ahorro con IA</div></div></div>
+          <p>Aplicación en TypeScript para seguimiento de ahorro, explorando el uso de IA dentro del flujo de la app.</p>
+          <div class="chips"><span class="chip hot">IA</span><span class="chip">TypeScript</span></div>
+          <div class="actions">
+            <a class="link-btn" href="https://github.com/vDivCode/SistemaDeAhorro-IA" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.9-1.29 2.74-1.02 2.74-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+              Código
+            </a>
+          </div>
+        </article>
+
+        <!-- Talently-UI -->
+        <article class="card">
+          <div class="card-top"><div><h3>Talently&nbsp;UI</h3><div class="role">Interfaz · práctica en Talently</div></div></div>
+          <p>Componentes e interfaz de usuario con Vue.js y maquetación responsiva, en el contexto de mi colaboración como asistente de proyecto en Talently.</p>
+          <div class="chips"><span class="chip">Vue.js</span><span class="chip">Tailwind</span></div>
+          <div class="actions">
+            <a class="link-btn" href="https://github.com/vDivCode/Talently-UI" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.9-1.29 2.74-1.02 2.74-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+              Código
+            </a>
+          </div>
+        </article>
+
+        <!-- Aplicaciones de escritorio Java -->
+        <article class="card">
+          <div class="card-top"><div><h3>Apps de escritorio en Java</h3><div class="role">Sistema de Ventas · Biblioteca (CRUD)</div></div></div>
+          <p>Aplicaciones de escritorio con operaciones CRUD para la gestión de usuarios, ventas e inventario, con MySQL y SQL Server.</p>
+          <div class="chips"><span class="chip">Java</span><span class="chip">MySQL</span><span class="chip">SQL Server</span></div>
+          <div class="actions">
+            <a class="link-btn" href="https://github.com/vDivCode/ProyectoIntegrador" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.9-1.29 2.74-1.02 2.74-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+              Código
+            </a>
+          </div>
+        </article>
+
+      </div>
+
+      <h3 class="more-title">// Más proyectos en vivo</h3>
+      <div class="more-grid">
+        <div class="mini">
+          <h4>Hidrosolar Calculadora</h4>
+          <p>Calculadora y dashboard para paneles solares.</p>
+          <a href="https://calculadora-panel-solar.vercel.app/" target="_blank" rel="noopener">Ver en vivo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+        </div>
+        <div class="mini">
+          <h4>Hidrosolar</h4>
+          <p>Plataforma de cálculo e implementación de paneles solares.</p>
+          <a href="https://mi-proyecto-web-bibx.onrender.com" target="_blank" rel="noopener">Ver en vivo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+        </div>
+        <div class="mini">
+          <h4>Brújula Vocacional</h4>
+          <p>Test vocacional basado en paradigmas de la carrera.</p>
+          <a href="https://testvocacional.integratify.io/" target="_blank" rel="noopener">Ver en vivo
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section id="stack">
+    <div class="wrap">
+      <div class="sec-head"><span class="num">02</span><h2>Stack técnico</h2></div>
+      <div class="stack-grid">
+        <div class="stack-card">
+          <h3>Frontend</h3>
+          <div class="chips">
+            <span class="chip">Vue.js</span><span class="chip">Nuxt.js</span><span class="chip">Next.js</span>
+            <span class="chip">TypeScript</span><span class="chip">Tailwind CSS</span><span class="chip">HTML</span><span class="chip">CSS</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <h3>Backend</h3>
+          <div class="chips">
+            <span class="chip">Java</span><span class="chip">Spring Boot</span><span class="chip">Spring Data JPA</span>
+            <span class="chip">Spring Security</span><span class="chip">API REST</span><span class="chip">Node.js</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <h3>Datos</h3>
+          <div class="chips">
+            <span class="chip">MySQL</span><span class="chip">SQL Server</span><span class="chip">H2</span>
+            <span class="chip">JPA / Hibernate</span><span class="chip">SQL</span><span class="chip">BD en la nube (Aiven)</span>
+          </div>
+        </div>
+        <div class="stack-card">
+          <h3>IA y herramientas</h3>
+          <div class="chips">
+            <span class="chip hot">MCP</span><span class="chip">OAuth 2.1 / PKCE</span><span class="chip">JWT</span>
+            <span class="chip">Claude Code</span><span class="chip">Git / GitHub</span><span class="chip">Render / Vercel</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<section class="contact" id="contacto">
+  <div class="wrap">
+    <span class="eyebrow">Disponible para prácticas preprofesionales</span>
+    <h2 style="margin-top:14px">Conversemos</h2>
+    <p>Busco una práctica donde aportar en proyectos reales, aprender buenas prácticas y seguir creciendo. Escríbeme y te respondo pronto.</p>
+    <div class="contact-row">
+      <span class="mailbox">
+        <span id="email">david.02.vg@gmail.com</span>
+        <button id="copyEmail" type="button">Copiar</button>
+      </span>
+      <a class="link-btn" href="https://www.linkedin.com/in/david-ventura-guzman-821a54289/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.64h.05c.53-1 1.82-2.06 3.75-2.06C20.4 8.58 22 10.5 22 14.1V21h-4v-6.1c0-1.46-.03-3.33-2.03-3.33-2.03 0-2.34 1.59-2.34 3.23V21H9V9Z"/></svg>
+        LinkedIn
+      </a>
+      <a class="link-btn" href="https://github.com/vDivCode" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.9-1.29 2.74-1.02 2.74-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>David Alonso Ventura Guzmán · Trujillo, Perú</span>
+    <span>Ingeniería de Sistemas e Informática · UTP</span>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var root=document.documentElement, KEY="dv-theme";
+    function sysDark(){return window.matchMedia&&window.matchMedia("(prefers-color-scheme:dark)").matches}
+    try{var s=localStorage.getItem(KEY); if(s)root.setAttribute("data-theme",s);}catch(e){}
+    document.getElementById("themeToggle").addEventListener("click",function(){
+      var cur=root.getAttribute("data-theme");
+      var isDark=cur?cur==="dark":sysDark();
+      var next=isDark?"light":"dark";
+      root.setAttribute("data-theme",next);
+      try{localStorage.setItem(KEY,next);}catch(e){}
+    });
+    var cb=document.getElementById("copyEmail");
+    cb.addEventListener("click",function(){
+      var txt="david.02.vg@gmail.com";
+      function ok(){var o=cb.textContent; cb.textContent="¡Copiado!"; setTimeout(function(){cb.textContent=o;},1500);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(ok).catch(sel);
+      }else{sel();}
+      function sel(){
+        try{var r=document.createRange(); r.selectNode(document.getElementById("email"));
+          var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);}catch(e){}
+        ok();
+      }
+    });
+    // smooth scroll para anclas internas
+    document.querySelectorAll('a[href^="#"]').forEach(function(a){
+      a.addEventListener("click",function(e){
+        var t=document.querySelector(a.getAttribute("href"));
+        if(t){e.preventDefault(); t.scrollIntoView({behavior:"smooth",block:"start"});}
+      });
+    });
+  })();
+</script>
+</body>
+</html>
